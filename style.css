@@ -180,7 +180,7 @@ nav a:hover {
   display: flex;
   gap: 20px;
   align-items: flex-start;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 20px;
   backdrop-filter: blur(4px);
