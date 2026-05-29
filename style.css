@@ -65,7 +65,7 @@ nav a:hover {
    HERO BANNER
 -------------------------------------------------- */
 .hero-banner {
-  height: 35vh;
+  height: 25vh;
   padding: 40px 20px;
   background: rgba(0, 50, 0, 0.25);
   display: flex;
@@ -430,4 +430,25 @@ h4 {
   max-width: 900px; 
   padding: 15px;*/
   margin: 25px 100px;
+}
+
+/* --------------------------------------------------
+   FFA SECTION
+-------------------------------------------------- */
+.ffa-container {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.ffa-content {
+  flex: 1;
+}
+
+.ffa-image {
+  max-width: 200px;
+  width: 100%;
+  flex-shrink: 0;
+  border-radius: 10px;
+  margin: 6% 0 3% 0;
 }
