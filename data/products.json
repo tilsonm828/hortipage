@@ -1,0 +1,31 @@
+
+[
+    {
+        "id": "azalea",
+        "name": "Azalea",
+        "price": 15,
+        "description": "The bold beauty of the azalea makes it a spring favorite.",
+        "image": ".\\assets\\images\\prod01.png"
+    },
+    {
+        "id": "celosia",
+        "name": "Celosia",
+        "price": 5,
+        "description": "Known for its wild shapes and vibrant colors.",
+        "image": ".\\assets\\images\\prod02.png"
+    },
+    {
+        "id": "sunflower",
+        "name": "Sunflower",
+        "price": 4,
+        "description": "Iconic, easy-to-grow, and loved by gardeners everywhere.",
+        "image": ".\\assets\\images\\prod03.png"
+    },
+    {
+        "id": "s-flower",
+        "name": "Sunflower",
+        "price": 4,
+        "description": "Iconic, easy-to-grow, and loved by gardeners everywhere.",
+        "image": ".\\assets\\images\\prod01.png"
+    }
+]

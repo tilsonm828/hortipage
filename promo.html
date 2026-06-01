@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seasonal Promotion</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #5a8b5a;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .product-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .product-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .product-item h3 {
+            margin-top: 0;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #5a8b5a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #4a7a4a;
+        }
+
+        #selections-container {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        #selections-container h2 {
+            margin-top: 0;
+            color: #5a8b5a;
+        }
+
+        #selected-products-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #selected-products-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        #selected-products-list li span {
+            font-weight: bold;
+        }
+
+        #selected-products-list input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Seasonal Promotion</h1>
+        <p>Select the products you'd like to order:</p>
+        <form id="promo-form">
+            <div class="product-grid" id="product-grid">
+                <!-- Products will be loaded here dynamically -->
+            </div>
+        <div id="selections-container">
+            <h2>Your Selections</h2>
+            <ul id="selected-products-list"></ul>
+        </div>
+
+            <button type="submit">Submit Order</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const productGrid = document.getElementById('product-grid');
+            const form = document.getElementById('promo-form');
+            const selectedProductsList = document.getElementById('selected-products-list');
+
+            fetch('data/products.json')
+                .then(response => response.json())
+                .then(products => {
+                    products.forEach(product => {
+                        const productItem = document.createElement('div');
+                        productItem.className = 'product-item';
+                        productItem.innerHTML = `
+                            <img src="${product.image}" alt="${product.name}">
+                            <h3>${product.name} – $${product.price}</h3>
+                            <p>${product.description}</p>
+                            <input type="checkbox" id="${product.id}" name="product" value="${product.name}">
+                            <label for="${product.id}">Select</label>
+                        `;
+                        productGrid.appendChild(productItem);
+                    });
+
+                    const checkboxes = document.querySelectorAll('input[name="product"]');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.addEventListener('change', updateSelectedProducts);
+                    });
+                });
+
+            function updateSelectedProducts() {
+                selectedProductsList.innerHTML = '';
+                const checkboxes = document.querySelectorAll('input[name="product"]:checked');
+
+                if (checkboxes.length > 0) {
+                    const header = document.createElement('li');
+                    header.innerHTML = `
+                        <span>Product</span>
+                        <span>Quantity</span>
+                    `;
+                    header.style.fontWeight = 'bold';
+                    header.style.borderBottom = '2px solid #ddd';
+                    selectedProductsList.appendChild(header);
+                }
+
+                checkboxes.forEach(checkbox => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>${checkbox.value}</span>
+                        <input type="number" min="1" value="1" data-product="${checkbox.value}">
+                    `;
+                    selectedProductsList.appendChild(li);
+                });
+            }
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const orderDetails = [];
+                const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
+                
+                fetch('data/products.json')
+                    .then(response => response.json())
+                    .then(products => {
+                        quantityInputs.forEach(input => {
+                            const productName = input.dataset.product;
+                            const quantity = parseInt(input.value, 10);
+                            const product = products.find(p => p.name === productName);
+
+                            if (product) {
+                                orderDetails.push({
+                                    name: product.name,
+                                    quantity: quantity,
+                                    price: product.price,
+                                    image: product.image,
+                                    total: product.price * quantity
+                                });
+                            }
+                        });
+
+                        localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+                        window.location.href = 'order.html';
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
