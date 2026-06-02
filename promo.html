@@ -107,41 +107,48 @@
     <div class="container">
         <h1>Seasonal Promotion</h1>
         <p>Select the products you'd like to order:</p>
-        <form id="promo-form">
+        <form id="promo-form" action="order-detail.html" name="order-form" method="GET">
+        <!-- <form id="promo-form" name="order-form"> -->
+
             <div class="product-grid" id="product-grid">
                 <!-- Products will be loaded here dynamically -->
             </div>
-        <div id="selections-container">
-            <h2>Your Selections</h2>
-            <ul id="selected-products-list"></ul>
-            <div id="total-amount-container" style="text-align: right; margin-top: 10px; font-weight: bold;"></div>
-        </div>
 
-        <div id="customer-details-container" style="margin-top: 20px;">
-            <h2>Your Details</h2>
-            <div style="display: flex; gap: 20px;">
-                <div style="flex: 1;">
-                    <label for="customer-name">Name:</label>
-                    <input type="text" id="customer-name" name="customer-name" required style="width: 100%;">
+            <br>
+            <div id="customer-details-container" style="margin-top: 20px;">
+                <h2>Contact Info</h2>
+                <div style="display: flex; gap: 20px;">
+                    <div style="flex: 1;">
+                        <label for="customer-name">Name:</label>
+                        <input type="text" id="customer-name" name="customer-name" required style="width: 100%;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="customer-email">Email:</label>
+                        <input type="email" id="customer-email" name="customer-email" required style="width: 100%;">
+                    </div>
                 </div>
-                <div style="flex: 1;">
-                    <label for="customer-email">Email:</label>
-                    <input type="email" id="customer-email" name="customer-email" required style="width: 100%;">
+                <div style="margin-top: 10px;">
+                    <label for="customer-phone">Phone:</label> <br>
+                    <input type="tel" id="customer-phone" name="customer-phone" required style="width: calc(50% - 10px);">
                 </div>
             </div>
-            <div style="margin-top: 10px;">
-                <label for="customer-phone">Phone:</label> <br>
-                <input type="tel" id="customer-phone" name="customer-phone" required style="width: calc(50% - 10px);">
-            </div>
-        </div>
+            <br>
 
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button type="submit" style="flex: 1;">Submit Order</button>
-            <button type="button" id="download-order" style="flex: 1;">Download Order</button>
-        </div>
+            <div id="selections-container">
+                <h2>Your Order</h2>
+                <ul id="selected-products-list"></ul>
+                <div id="total-amount-container" style="text-align: right; margin-top: 10px; font-weight: bold;"></div>
+            <input type="hidden" id="total-order-amount" name="total-order-amount" value="0">
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="submit" style="flex: 1;">Submit</button>
+                <button type="button" id="download-order" style="flex: 1;">Download</button>
+            </div>
         </form>
     </div>
     <script>
+        let totalAmount = 0;
         document.addEventListener('DOMContentLoaded', () => {
             const productGrid = document.getElementById('product-grid');
             const form = document.getElementById('promo-form');
@@ -175,7 +182,7 @@
             function updateSelectedProducts() {
                 selectedProductsList.innerHTML = '';
                 const checkboxes = document.querySelectorAll('input[name="product"]:checked');
-                let totalAmount = 0;
+                // let totalAmount = 0;
 
                 if (checkboxes.length > 0) {
                     const header = document.createElement('li');
@@ -198,12 +205,14 @@
                     li.innerHTML = `
                         <img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
                         <span>${checkbox.value}</span>
-                        <input type="number" min="1" value="${quantity}" data-product="${checkbox.value}" data-price="${price}">
+                        <input type="hidden" name="product-name-${product.id}" value="${product.name}">
+                        <input type="hidden" name="product-price-${product.id}" value="${price}">
+                        <input type="number" min="1" value="${quantity}" name="quantity-${product.id}" data-product-id="${product.id}" data-price="${price}">
                     `;
                     selectedProductsList.appendChild(li);
                 });
 
-                document.getElementById('total-amount-container').innerText = `Total: $${totalAmount.toFixed(2)}`;
+                document.getElementById('total-amount-container').innerText = `Total Amount: $${totalAmount.toFixed(2)}`;
 
                 const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
                 quantityInputs.forEach(input => {
@@ -220,6 +229,7 @@
                     totalAmount += price * quantity;
                 });
                 document.getElementById('total-amount-container').innerText = `Total: $${totalAmount.toFixed(2)}`;
+                document.getElementById('total-order-amount').value = totalAmount.toFixed(2);
             }
 
             document.getElementById('download-order').addEventListener('click', () => {
@@ -235,46 +245,61 @@
                 }
             });
 
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-                const orderDetails = [];
-                const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
+            // form.addEventListener('submit', function(event) {
+            //     event.preventDefault();
+            //     const orderDetails = [];
+            //     const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
                 
-                const customerName = document.getElementById('customer-name').value;
-                const customerPhone = document.getElementById('customer-phone').value;
-                const customerEmail = document.getElementById('customer-email').value;
+            //     const customerName = document.getElementById('customer-name').value;
+            //     const customerPhone = document.getElementById('customer-phone').value;
+            //     const customerEmail = document.getElementById('customer-email').value;
 
-                fetch('data/products.json')
-                    .then(response => response.json())
-                    .then(products => {
-                        quantityInputs.forEach(input => {
-                            const productName = input.dataset.product;
-                            const quantity = parseInt(input.value, 10);
-                            const product = products.find(p => p.name === productName);
+            //     fetch('data/products.json')
+            //         .then(response => response.json())
+            //         .then(products => {
+            //             quantityInputs.forEach(input => {
+            //                 const productName = input.dataset.product;
+            //                 const quantity = parseInt(input.value, 10);
+            //                 const product = products.find(p => p.name === productName);
 
-                            if (product) {
-                                orderDetails.push({
-                                    name: product.name,
-                                    quantity: quantity,
-                                    price: product.price,
-                                    image: product.image,
-                                    total: product.price * quantity
-                                });
-                            }
-                        });
+            //                 if (product) {
+            //                     orderDetails.push({
+            //                         name: product.name,
+            //                         quantity: quantity,
+            //                         price: product.price,
+            //                         image: product.image,
+            //                         total: product.price * quantity
+            //                     });
+            //                 }
+            //             });
 
-                        localStorage.setItem('orderDetails', JSON.stringify({
-                            products: orderDetails,
-                            customer: {
-                                name: customerName,
-                                phone: customerPhone,
-                                email: customerEmail
-                            }
-                        }));
-                        window.location.href = 'order.html';
-                    });
-            });
+            //             localStorage.setItem('orderDetails', JSON.stringify({
+            //                 products: orderDetails,
+            //                 customer: {
+            //                     name: customerName,
+            //                     phone: customerPhone,
+            //                     email: customerEmail
+            //                 }
+            //             }));
+            //             window.location.href = 'order.html';
+            //         });
+            // });
         });
+
+        // ==== add extra data before submitting =======
+        // document.getElementById('promo-form').addEventListener('submit', async (e) => {
+        //     e.preventDefault();
+
+        //     const formData = new FormData(e.target);
+        //     formData.append('total-amount', document.getElementById('total-amount-container').textContent);
+
+        //     await fetch('/submit', {
+        //         method: 'POST',
+        //         body: formData
+        //     });
+        // });
+
+
     </script>
 </body>
 </html>

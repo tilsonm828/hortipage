@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        .detail-item {
+            margin-bottom: 5px;
+        }
+        .detail-item strong {
+            display: inline-block;
+            width: 120px;
+        }
+        .detail-item input[type="text"] {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            margin-left: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Details</h1>
+        <div id="order-details">
+            <form id="order-details-form">
+                <div id="customer-info-display"></div>
+                <div id="product-list-display"></div>
+                <div id="total-amount-display"></div>
+            </form>
+        </div>
+        <p><a href="promo.html">Place another order</a></p>
+
+        <button id="confirm-order-button" style="
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #5a8b5a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        ">Confirm Order</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderDetailsDiv = document.getElementById('order-details');
+            const customerInfoDisplay = document.getElementById('customer-info-display');
+            const productListDisplay = document.getElementById('product-list-display');
+            const totalAmountDisplay = document.getElementById('total-amount-display');
+            let detailsHtml = '';
+
+            if (urlParams.toString() === '') {
+                detailsHtml = '<p>No order details submitted.</p>';
+            } else {
+                // detailsHtml = '<h2>Submitted Information:</h2>';
+                let products = {};
+                let customerDetails = {};
+                let totalAmount = 0;
+
+                for (let pair of urlParams.entries()) {
+                    let key = decodeURIComponent(pair[0]);
+                    let value = decodeURIComponent(pair[1]);
+
+                    if (key.startsWith('quantity-')) {
+                        const productId = key.replace('quantity-', '');
+                        if (!products[productId]) products[productId] = {};
+                        products[productId].quantity = parseInt(value, 10);
+                    } else if (key.startsWith('product-name-')) {
+                        const productId = key.replace('product-name-', '');
+                        if (!products[productId]) products[productId] = {};
+                        products[productId].name = value;
+                    } else if (key.startsWith('product-price-')) {
+                        const productId = key.replace('product-price-', '');
+                        if (!products[productId]) products[productId] = {};
+                        products[productId].price = parseFloat(value);
+                    } else if (key === 'total-order-amount') {
+                        totalAmount = parseFloat(value);
+                    } else if (key.startsWith('customer-')) {
+                        customerDetails[key.replace('customer-', '')] = value;
+                    }
+                        // } else {
+                    //     // For other general form fields
+                    //     detailsHtml += `<p class="detail-item"><strong>${key}:</strong> ${value}</p>`;
+                    // }
+                }
+
+                // Display Customer Details
+                if (Object.keys(customerDetails).length > 0) {
+                    let customerHtml = '<h3>Customer Information:</h3>';
+                    for (const key in customerDetails) {
+                        customerHtml += `
+                            <div class="detail-item">
+                                <label><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong></label>
+                                <input type="text" value="${customerDetails[key]}" readonly style="width: calc(100% - 160px); padding: 5px; margin-left: 5px;">
+                            </div>
+                        `;
+                    }
+                    customerInfoDisplay.innerHTML = customerHtml;
+                }
+
+                // Display Product Details
+                if (Object.keys(products).length > 0) {
+                    let productsHtml = '<h3>Order Items:</h3>';
+                    for (const productId in products) {
+                        const product = products[productId];
+                        const subtotal = (product.quantity * product.price).toFixed(2);
+                        productsHtml += `
+                            <div class="detail-item">
+                                <label><strong>${product.name}:</strong></label>
+                                <input type="text" value="${product.quantity} x $${product.price.toFixed(2)} = $${subtotal}" readonly style="width: calc(100% - 160px); padding: 5px; margin-left: 5px;">
+                            </div>
+                        `;
+                    }
+                    productListDisplay.innerHTML = productsHtml;
+                }
+
+                // Display Total Amount
+                totalAmountDisplay.innerHTML = `
+                    <h3 style="text-align: right; margin-top: 20px;">
+                        <label><strong>Total Order:</strong></label>
+                        <input type="text" value="$${totalAmount.toFixed(2)}" readonly style="width: auto; padding: 5px; font-weight: bold; text-align: right; border: none; background: transparent;">
+                    </h3>
+                `;
+            }
+            // orderDetailsDiv.innerHTML = detailsHtml;
+
+            // Populate the hidden form for submission to confirmation.html
+            // const confirmOrderForm = document.getElementById('confirm-order-form');
+
+            // if (Object.keys(customerDetails).length > 0) {
+            //     for (const key in customerDetails) {
+            //         const input = document.createElement('input');
+            //         input.type = 'hidden';
+            //         input.name = `customer-${key}`;
+            //         input.value = customerDetails[key];
+            //         confirmOrderForm.appendChild(input);
+            //     }
+            // }
+
+            // if (Object.keys(products).length > 0) {
+            //     for (const productId in products) {
+            //         const product = products[productId];
+                    
+            //         let inputName = document.createElement('input');
+            //         inputName.type = 'hidden';
+            //         inputName.name = `product-name-${productId}`;
+            //         inputName.value = product.name;
+            //         confirmOrderForm.appendChild(inputName);
+
+            //         let inputQuantity = document.createElement('input');
+            //         inputQuantity.type = 'hidden';
+            //         inputQuantity.name = `quantity-${productId}`;
+            //         inputQuantity.value = product.quantity;
+            //         confirmOrderForm.appendChild(inputQuantity);
+
+            //         let inputPrice = document.createElement('input');
+            //         inputPrice.type = 'hidden';
+            //         inputPrice.name = `product-price-${productId}`;
+            //         inputPrice.value = product.price;
+            //         confirmOrderForm.appendChild(inputPrice);
+            //     }
+            // }
+
+            // if (totalAmount > 0) {
+            //     const inputTotal = document.createElement('input');
+            //     inputTotal.type = 'hidden';
+            //     inputTotal.name = 'total-order-amount';
+            //     inputTotal.value = totalAmount.toFixed(2);
+            //     confirmOrderForm.appendChild(inputTotal);
+            // }
+
+            // New JavaScript for JSON submission
+            const confirmOrderButton = document.getElementById('confirm-order-button');
+            if (confirmOrderButton) {
+                confirmOrderButton.addEventListener('click', () => {
+                    const orderData = {
+                        customer: customerDetails,
+                        products: [],
+                        totalAmount: totalAmount.toFixed(2)
+                    };
+
+                    for (const productId in products) {
+                        orderData.products.push({
+                            id: productId,
+                            name: products[productId].name,
+                            quantity: products[productId].quantity,
+                            price: products[productId].price.toFixed(2)
+                        });
+                    }
+
+                    localStorage.setItem('orderDetailsJson', JSON.stringify(orderData));
+                    window.location.href = 'confirmation.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
