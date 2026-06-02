@@ -114,9 +114,31 @@
         <div id="selections-container">
             <h2>Your Selections</h2>
             <ul id="selected-products-list"></ul>
+            <div id="total-amount-container" style="text-align: right; margin-top: 10px; font-weight: bold;"></div>
         </div>
 
-            <button type="submit">Submit Order</button>
+        <div id="customer-details-container" style="margin-top: 20px;">
+            <h2>Your Details</h2>
+            <div style="display: flex; gap: 20px;">
+                <div style="flex: 1;">
+                    <label for="customer-name">Name:</label>
+                    <input type="text" id="customer-name" name="customer-name" required style="width: 100%;">
+                </div>
+                <div style="flex: 1;">
+                    <label for="customer-email">Email:</label>
+                    <input type="email" id="customer-email" name="customer-email" required style="width: 100%;">
+                </div>
+            </div>
+            <div style="margin-top: 10px;">
+                <label for="customer-phone">Phone:</label> <br>
+                <input type="tel" id="customer-phone" name="customer-phone" required style="width: calc(50% - 10px);">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" style="flex: 1;">Submit Order</button>
+            <button type="button" id="download-order" style="flex: 1;">Download Order</button>
+        </div>
         </form>
     </div>
     <script>
@@ -125,9 +147,12 @@
             const form = document.getElementById('promo-form');
             const selectedProductsList = document.getElementById('selected-products-list');
 
+            let products = [];
+
             fetch('data/products.json')
                 .then(response => response.json())
-                .then(products => {
+                .then(data => {
+                    products = data;
                     products.forEach(product => {
                         const productItem = document.createElement('div');
                         productItem.className = 'product-item';
@@ -135,7 +160,7 @@
                             <img src="${product.image}" alt="${product.name}">
                             <h3>${product.name} – $${product.price}</h3>
                             <p>${product.description}</p>
-                            <input type="checkbox" id="${product.id}" name="product" value="${product.name}">
+                            <input type="checkbox" id="${product.id}" name="product" value="${product.name}" data-image="${product.image}" data-price="${product.price}">
                             <label for="${product.id}">Select</label>
                         `;
                         productGrid.appendChild(productItem);
@@ -150,6 +175,7 @@
             function updateSelectedProducts() {
                 selectedProductsList.innerHTML = '';
                 const checkboxes = document.querySelectorAll('input[name="product"]:checked');
+                let totalAmount = 0;
 
                 if (checkboxes.length > 0) {
                     const header = document.createElement('li');
@@ -164,19 +190,60 @@
 
                 checkboxes.forEach(checkbox => {
                     const li = document.createElement('li');
+                    const product = products.find(p => p.name === checkbox.value);
+                    const price = parseFloat(checkbox.dataset.price);
+                    const quantity = 1;
+                    totalAmount += price * quantity;
+
                     li.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
                         <span>${checkbox.value}</span>
-                        <input type="number" min="1" value="1" data-product="${checkbox.value}">
+                        <input type="number" min="1" value="${quantity}" data-product="${checkbox.value}" data-price="${price}">
                     `;
                     selectedProductsList.appendChild(li);
                 });
+
+                document.getElementById('total-amount-container').innerText = `Total: $${totalAmount.toFixed(2)}`;
+
+                const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
+                quantityInputs.forEach(input => {
+                    input.addEventListener('change', updateTotalAmount);
+                });
             }
+
+            function updateTotalAmount() {
+                let totalAmount = 0;
+                const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
+                quantityInputs.forEach(input => {
+                    const price = parseFloat(input.dataset.price);
+                    const quantity = parseInt(input.value, 10);
+                    totalAmount += price * quantity;
+                });
+                document.getElementById('total-amount-container').innerText = `Total: $${totalAmount.toFixed(2)}`;
+            }
+
+            document.getElementById('download-order').addEventListener('click', () => {
+                const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
+                if (orderDetails) {
+                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(orderDetails, null, 2));
+                    const downloadAnchorNode = document.createElement('a');
+                    downloadAnchorNode.setAttribute("href", dataStr);
+                    downloadAnchorNode.setAttribute("download", "orders.json");
+                    document.body.appendChild(downloadAnchorNode); // required for firefox
+                    downloadAnchorNode.click();
+                    downloadAnchorNode.remove();
+                }
+            });
 
             form.addEventListener('submit', function(event) {
                 event.preventDefault();
                 const orderDetails = [];
                 const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
                 
+                const customerName = document.getElementById('customer-name').value;
+                const customerPhone = document.getElementById('customer-phone').value;
+                const customerEmail = document.getElementById('customer-email').value;
+
                 fetch('data/products.json')
                     .then(response => response.json())
                     .then(products => {
@@ -196,7 +263,14 @@
                             }
                         });
 
-                        localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+                        localStorage.setItem('orderDetails', JSON.stringify({
+                            products: orderDetails,
+                            customer: {
+                                name: customerName,
+                                phone: customerPhone,
+                                email: customerEmail
+                            }
+                        }));
                         window.location.href = 'order.html';
                     });
             });
