@@ -149,6 +149,21 @@
     </div>
     <script>
         let totalAmount = 0;
+
+        // Update Total Amount when Quantity Changes
+        function updateTotalAmount() {
+            let totalAmount = 0;
+            const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
+            quantityInputs.forEach(input => {
+                const price = parseFloat(input.dataset.price);
+                const quantity = parseInt(input.value, 10);
+                totalAmount += price * quantity;
+            });
+            console.log("Total Amount: ", totalAmount);
+            document.getElementById('total-amount-container').innerText = `Total: $${totalAmount.toFixed(2)}`;
+            document.getElementById('total-order-amount').value = totalAmount.toFixed(2);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const productGrid = document.getElementById('product-grid');
             const form = document.getElementById('promo-form');
@@ -179,10 +194,18 @@
                     });
                 });
 
+            
+            // Update Selected Products when Checkboxes Change
             function updateSelectedProducts() {
+                // Preserve quantities when re-rendering
+                const quantityMap = new Map();
+                const existingQuantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
+                existingQuantityInputs.forEach(input => {
+                    quantityMap.set(input.dataset.productId, parseInt(input.value, 10));
+                });
+
                 selectedProductsList.innerHTML = '';
                 const checkboxes = document.querySelectorAll('input[name="product"]:checked');
-                // let totalAmount = 0;
 
                 if (checkboxes.length > 0) {
                     const header = document.createElement('li');
@@ -199,8 +222,7 @@
                     const li = document.createElement('li');
                     const product = products.find(p => p.name === checkbox.value);
                     const price = parseFloat(checkbox.dataset.price);
-                    const quantity = 1;
-                    totalAmount += price * quantity;
+                    const quantity = quantityMap.get(product.id) || 1;
 
                     li.innerHTML = `
                         <img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
@@ -212,7 +234,7 @@
                     selectedProductsList.appendChild(li);
                 });
 
-                document.getElementById('total-amount-container').innerText = `Total Amount: $${totalAmount.toFixed(2)}`;
+                updateTotalAmount();
 
                 const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
                 quantityInputs.forEach(input => {
@@ -220,17 +242,19 @@
                 });
             }
 
-            function updateTotalAmount() {
-                let totalAmount = 0;
-                const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
-                quantityInputs.forEach(input => {
-                    const price = parseFloat(input.dataset.price);
-                    const quantity = parseInt(input.value, 10);
-                    totalAmount += price * quantity;
-                });
-                document.getElementById('total-amount-container').innerText = `Total: $${totalAmount.toFixed(2)}`;
-                document.getElementById('total-order-amount').value = totalAmount.toFixed(2);
-            }
+            // Update Total Amount when Quantity Changes
+            // function updateTotalAmount() {
+            //     let totalAmount = 0;
+            //     const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
+            //     quantityInputs.forEach(input => {
+            //         const price = parseFloat(input.dataset.price);
+            //         const quantity = parseInt(input.value, 10);
+            //         totalAmount += price * quantity;
+            //     });
+            //     console.log("Total Amount: ", totalAmount);
+            //     document.getElementById('total-amount-container').innerText = `Total: $${totalAmount.toFixed(2)}`;
+            //     document.getElementById('total-order-amount').value = totalAmount.toFixed(2);
+            // }
 
             document.getElementById('download-order').addEventListener('click', () => {
                 const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
