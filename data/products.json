@@ -22,9 +22,9 @@
         "image": ".\\assets\\images\\prod03.png"
     },
     {
-        "id": "s-flower",
-        "name": "Sunflower",
-        "price": 4,
+        "id": "Newflower",
+        "name": "Newflower",
+        "price": 6,
         "description": "Iconic, easy-to-grow, and loved by gardeners everywhere.",
         "image": ".\\assets\\images\\prod01.png"
     }
