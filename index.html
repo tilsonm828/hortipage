@@ -11,12 +11,17 @@
 
 <body>
 
+<div id="splash">
+    <img src="./assets/images/sales.png" alt="Welcome">
+    <button id="close-btn" aria-label="Close">×</button>
+</div>
+
 <!-- HERO BANNER -->
 <header class="hero-banner" id="home">
   <div class="hero-content">
     <h1 class="glow-gold">Taconic Horticulture Department</h1>
     <p>Growing the future, one plant at a time</p>
-    <!-- <a href="#seasonal-sales" class="hero-button glow-gold">View Seasonal Sales</a> -->
+    <a href="sales.html" class="hero-button glow-gold">View Seasonal Sales</a>
   </div>
 </header>
 
@@ -369,6 +374,26 @@
 
 <!-- JAVASCRIPT -->
 <script src="script.js"></script>
+<script>
+    const splash = document.getElementById('splash');
+    const closeBtn = document.getElementById('close-btn');
+
+    function closeSplash() {
+        if (splash.classList.contains('fade-out')) return;
+
+        splash.classList.add('fade-out');
+
+        setTimeout(() => {
+            splash.remove();
+        }, 2000); // matches CSS transition duration
+    }
+
+    // Auto-close after 10 seconds
+    setTimeout(closeSplash, 8000);
+
+    // Manual close
+    closeBtn.addEventListener('click', closeSplash);
+</script>
 
 </body>
 </html>
