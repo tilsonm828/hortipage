@@ -3,6 +3,12 @@
 -------------------------------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
+:root {
+  --accent: #0b6623;
+  --muted: #666;
+}
+
+
 html, body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
@@ -128,6 +134,7 @@ nav a:hover {
   font-size: 1.05rem;
   margin: 0 auto;
   max-width: 800px;
+  line-height: 1.8;
 }
 
 .about-text {
@@ -135,16 +142,27 @@ nav a:hover {
   font-size: 1.2rem;
   margin: 10px auto;
   max-width: 750px;
+  line-height: 1.8;
 }
 
 .note-text {
   font-size: 0.9rem;
   color: #555;
+  line-height: 1.7;
 }
 
 .about-list {
     font-size: 1.1rem;
-    line-height: 1.8;
+    line-height: 2;
+}
+
+p {
+  line-height: 1.8;
+}
+
+li {
+  line-height: 1.9;
+  margin-bottom: 4px;
 }
 
 /* --------------------------------------------------
@@ -419,7 +437,7 @@ h4 {
 }
 
 .teacher-info {
-  margin-top: 8px 0;
+  margin: 8px 0;
 }
 
 .info-card {
@@ -498,4 +516,59 @@ h4 {
 
 #close-btn:hover {
     background: rgba(0, 0, 0, 0.9);
+}
+
+/* ==================================================
+   CONSISTENCY UTILITIES
+================================================== */
+.side-image-layout{
+  display:flex;
+  gap:25px;
+  align-items:flex-start;
+}
+
+.content-card{
+  background:rgba(255,255,255,0.35);
+  border-radius:12px;
+  padding:15px;
+  text-align:center;
+  backdrop-filter:blur(4px);
+  transition:.3s ease;
+}
+
+.content-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 0 12px rgba(255,215,0,.7),
+             0 0 20px rgba(255,215,0,.5);
+}
+
+.btn{
+  display:inline-block;
+  padding:10px 20px;
+  border-radius:8px;
+  font-weight:bold;
+  text-decoration:none;
+  transition:.3s;
+}
+
+.teacher-section{padding:10px 20px;}
+.transparent-card{background:transparent;padding:0;}
+.teacher-card-compact{padding:0 5%;}
+
+/* unify card styles */
+.plant-card,
+.seasonal-item{
+  background:rgba(255,255,255,0.35);
+  border-radius:12px;
+  padding:15px;
+  text-align:center;
+  backdrop-filter:blur(4px);
+  transition:.3s ease;
+}
+
+.about-container,
+.ffa-container{
+  display:flex;
+  gap:25px;
+  align-items:flex-start;
 }
