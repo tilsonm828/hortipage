@@ -4,331 +4,596 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seasonal Promotion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --sage: #5a7a52;
+            --sage-dark: #3e5638;
+            --sage-light: #8aaa82;
+            --cream: #f8f5f0;
+            --warm-white: #fffdf9;
+            --text: #2c2c2c;
+            --muted: #7a7a72;
+            --border: #e0dbd3;
+            --accent: #c4853a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 0;
-            padding: 20px;
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px 60px;
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(90,122,82,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 100%, rgba(196,133,58,0.06) 0%, transparent 50%);
         }
+
         .container {
-            max-width: 800px;
+            max-width: 860px;
             margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h1 {
+
+        /* Header */
+        .header {
             text-align: center;
-            color: #5a8b5a;
+            margin-bottom: 48px;
+            animation: fadeDown 0.6s ease both;
         }
+
+        .header-eyebrow {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--sage);
+            border: 1px solid var(--sage-light);
+            padding: 5px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 700;
+            color: var(--sage-dark);
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+        }
+
+        .header-sub {
+            margin-top: 12px;
+            color: var(--muted);
+            font-weight: 300;
+            font-size: 1.05rem;
+        }
+
+        /* Cards */
+        .section-card {
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            animation: fadeUp 0.5s ease both;
+        }
+
+        .section-card:nth-child(2) { animation-delay: 0.1s; }
+        .section-card:nth-child(3) { animation-delay: 0.2s; }
+        .section-card:nth-child(4) { animation-delay: 0.3s; }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--sage-dark);
+            margin-bottom: 24px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 22px;
+            background: var(--sage);
+            border-radius: 3px;
+        }
+
+        /* Product Grid */
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
         }
+
         .product-item {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
+            border: 2px solid var(--border);
+            padding: 0;
+            border-radius: 12px;
             text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+            overflow: hidden;
+            position: relative;
+            background: var(--warm-white);
         }
+
+        .product-item:hover {
+            border-color: var(--sage-light);
+            box-shadow: 0 6px 24px rgba(90,122,82,0.12);
+            transform: translateY(-2px);
+        }
+
+        .product-item.selected {
+            border-color: var(--sage);
+            box-shadow: 0 0 0 3px rgba(90,122,82,0.15);
+        }
+
         .product-item img {
             width: 100%;
-            height: 200px;
+            height: 160px;
             object-fit: cover;
-            border-radius: 5px;
-        }
-        .product-item h3 {
-            margin-top: 0;
-        }
-        button {
             display: block;
-            width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-            background-color: #5a8b5a;
-            color: white;
-            border: none;
-            border-radius: 5px;
+        }
+
+        .product-item-body {
+            padding: 14px 12px 16px;
+        }
+
+        .product-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--sage-dark);
+            margin-bottom: 4px;
+        }
+
+        .product-price {
+            font-weight: 500;
+            color: var(--accent);
+            font-size: 0.95rem;
+        }
+
+        .product-desc {
+            font-size: 0.82rem;
+            color: var(--muted);
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        /* Custom checkbox */
+        .product-item input[type="checkbox"] {
+            display: none;
+        }
+
+        .product-select-btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 7px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border: 1.5px solid var(--border);
+            color: var(--muted);
+            transition: all 0.2s;
             cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #4a7a4a;
         }
 
-        #selections-container {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            padding: 15px;
+        .product-item.selected .product-select-btn {
+            background: var(--sage);
+            border-color: var(--sage);
+            color: white;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: var(--sage);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .checkmark svg { width: 13px; height: 13px; fill: white; }
+
+        .product-item.selected .checkmark {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Contact Form */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full { grid-column: 1 / -1; }
+
+        label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid var(--border);
             border-radius: 8px;
-            margin-top: 20px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text);
+            background: var(--cream);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
         }
 
-        #selections-container h2 {
-            margin-top: 0;
-            color: #5a8b5a;
+        input:focus, textarea:focus {
+            border-color: var(--sage);
+            box-shadow: 0 0 0 3px rgba(90,122,82,0.1);
         }
 
+        textarea { resize: vertical; min-height: 80px; }
+
+        /* Order summary */
         #selected-products-list {
-            list-style-type: none;
+            list-style: none;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         #selected-products-list li {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: #fff;
-            border: 1px solid #eee;
-            padding: 10px 15px;
-            border-radius: 4px;
-            margin-bottom: 8px;
+            gap: 12px;
+            background: var(--cream);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 10px;
+        }
+
+        #selected-products-list li.header-row {
+            background: none;
+            border: none;
+            padding: 0 16px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+        }
+
+        #selected-products-list li img {
+            width: 46px;
+            height: 46px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
         }
 
         #selected-products-list li span {
-            font-weight: bold;
+            font-weight: 500;
+            flex: 1;
         }
 
         #selected-products-list input[type="number"] {
-            width: 60px;
-            padding: 5px;
+            width: 68px;
+            padding: 7px 10px;
             text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            background: var(--warm-white);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #selected-products-list input[type="number"]:focus {
+            border-color: var(--sage);
+        }
+
+        .empty-order {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+            padding: 20px 0;
+        }
+
+        .total-line {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .total-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .total-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--sage-dark);
+        }
+
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 24px;
+            border-radius: 10px;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            flex: 2;
+            background: var(--sage);
+            color: white;
+            box-shadow: 0 4px 14px rgba(90,122,82,0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--sage-dark);
+            box-shadow: 0 6px 20px rgba(90,122,82,0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: transparent;
+            color: var(--muted);
+            border: 1.5px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--sage-light);
+            color: var(--sage);
+            background: rgba(90,122,82,0.04);
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 540px) {
+            .form-row { grid-template-columns: 1fr; }
+            .btn-row { flex-direction: column; }
+            .btn-primary, .btn-secondary { flex: unset; width: 100%; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Seasonal Promotion</h1>
-        <p>Select the products you'd like to order:</p>
+
+        <div class="header">
+            <div class="header-eyebrow">Limited Time Offer</div>
+            <h1>Seasonal Promotion</h1>
+            <p class="header-sub">Select your favourites and we'll take care of the rest.</p>
+        </div>
+
         <form id="promo-form" action="order-detail.html" name="order-form" method="GET">
-        <!-- <form id="promo-form" name="order-form"> -->
 
-            <div class="product-grid" id="product-grid">
-                <!-- Products will be loaded here dynamically -->
+            <!-- Products -->
+            <div class="section-card">
+                <div class="section-title">Products</div>
+                <div class="product-grid" id="product-grid"></div>
             </div>
 
-            <br>
-            <div id="customer-details-container" style="margin-top: 20px;">
-                <h2>Contact Info</h2>
-                <div style="display: flex; gap: 20px;">
-                    <div style="flex: 1;">
-                        <label for="customer-name">Name:</label>
-                        <input type="text" id="customer-name" name="customer-name" required style="width: 100%;">
+            <!-- Contact -->
+            <div class="section-card">
+                <div class="section-title">Contact Info</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customer-name">Name</label>
+                        <input type="text" id="customer-name" name="customer-name" placeholder="First Last" required>
                     </div>
-                    <div style="flex: 1;">
-                        <label for="customer-email">Email:</label>
-                        <input type="email" id="customer-email" name="customer-email" required style="width: 100%;">
+                    <div class="form-group">
+                        <label for="customer-email">Email</label>
+                        <input type="email" id="customer-email" name="customer-email" placeholder="name@example.com" required>
                     </div>
                 </div>
-                <div style="margin-top: 10px;">
-                    <label for="customer-phone">Phone:</label> <br>
-                    <input type="tel" id="customer-phone" name="customer-phone" required style="width: calc(50% - 10px);">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customer-phone">Phone</label>
+                        <input type="tel" id="customer-phone" name="customer-phone" placeholder="Your Phone Number" required>
+                    </div>
                 </div>
-                <div style="margin-top: 10px;">
-                    <label for="customer-notes">Notes:</label> <br>
-                    <textarea id="customer-notes" name="customer-notes" rows="3" style="width: 100%;"></textarea>
+                <div class="form-group" style="margin-top: 0;">
+                    <label for="customer-notes">Notes</label>
+                    <textarea id="customer-notes" name="customer-notes" placeholder="Any requests or instructions"></textarea>
                 </div>
-            </div>
-            <br>
-
-            <div id="selections-container">
-                <h2>Your Order</h2>
-                <ul id="selected-products-list"></ul>
-                <div id="total-amount-container" style="text-align: right; margin-top: 10px; font-weight: bold;"></div>
-            <input type="hidden" id="total-order-amount" name="total-order-amount" value="0">
             </div>
 
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button type="submit" style="flex: 1;">Submit</button>
-                <button type="reset" id="download-order" style="flex: 1;">Reset</button>
-                <button type="button" onclick="window.location.href='index.html'" style="flex: 1;">Home</button>
+            <!-- Order Summary -->
+            <div class="section-card">
+                <div class="section-title">Your Order</div>
+                <ul id="selected-products-list">
+                    <li class="empty-order">No products selected yet.</li>
+                </ul>
+                <input type="hidden" id="total-order-amount" name="total-order-amount" value="0">
+                <div class="total-line" id="total-line" style="display:none;">
+                    <span class="total-label">Total</span>
+                    <span class="total-amount" id="total-display">$0.00</span>
+                </div>
             </div>
+
+            <div class="btn-row">
+                <button type="submit" class="btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Check Out
+                </button>
+                <button type="reset" class="btn-secondary" id="download-order">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.31"/></svg>
+                    Reset
+                </button>
+                <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Home
+                </button>
+            </div>
+
         </form>
     </div>
-    <script>
-        let totalAmount = 0;
 
-        // Update Total Amount when Quantity Changes
+    <script>
         function updateTotalAmount() {
-            let totalAmount = 0;
-            const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
-            quantityInputs.forEach(input => {
-                const price = parseFloat(input.dataset.price);
-                const quantity = parseInt(input.value, 10);
-                totalAmount += price * quantity;
+            let total = 0;
+            document.querySelectorAll('#selected-products-list input[type="number"]').forEach(input => {
+                total += parseFloat(input.dataset.price) * parseInt(input.value, 10);
             });
-            console.log("Total Amount: ", totalAmount);
-            document.getElementById('total-amount-container').innerText = `Total: $${totalAmount.toFixed(2)}`;
-            document.getElementById('total-order-amount').value = totalAmount.toFixed(2);
+            document.getElementById('total-display').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('total-order-amount').value = total.toFixed(2);
+            document.getElementById('total-line').style.display = total > 0 ? 'flex' : 'none';
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const productGrid = document.getElementById('product-grid');
-            const form = document.getElementById('promo-form');
             const selectedProductsList = document.getElementById('selected-products-list');
-
             let products = [];
 
             fetch('data/products.json')
-                .then(response => response.json())
+                .then(r => r.json())
                 .then(data => {
                     products = data;
                     products.forEach(product => {
-                        const productItem = document.createElement('div');
-                        productItem.className = 'product-item';
-                        productItem.innerHTML = `
+                        const el = document.createElement('div');
+                        el.className = 'product-item';
+                        el.dataset.productId = product.id;
+                        el.innerHTML = `
+                            <div class="checkmark"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
                             <img src="${product.image}" alt="${product.name}">
-                            <h3>${product.name} – $${product.price}</h3>
-                            <p>${product.description}</p>
-                            <input type="checkbox" id="${product.id}" name="product" value="${product.name}" data-image="${product.image}" data-price="${product.price}">
-                            <label for="${product.id}">Select</label>
+                            <div class="product-item-body">
+                                <h3>${product.name}</h3>
+                                <div class="product-price">$${product.price}</div>
+                                <p class="product-desc">${product.description}</p>
+                                <input type="checkbox" id="${product.id}" name="product" value="${product.name}" data-image="${product.image}" data-price="${product.price}">
+                                <label class="product-select-btn" for="${product.id}">Select</label>
+                            </div>
                         `;
-                        productGrid.appendChild(productItem);
-                    });
+                        productGrid.appendChild(el);
 
-                    const checkboxes = document.querySelectorAll('input[name="product"]');
-                    checkboxes.forEach(checkbox => {
-                        checkbox.addEventListener('change', updateSelectedProducts);
+                        el.querySelector('input[type="checkbox"]').addEventListener('change', () => {
+                            el.classList.toggle('selected', el.querySelector('input').checked);
+                            el.querySelector('.product-select-btn').textContent = el.querySelector('input').checked ? '✓ Selected' : 'Select';
+                            updateSelectedProducts();
+                        });
                     });
+                })
+                .catch(() => {
+                    // Demo fallback if no JSON file
+                    productGrid.innerHTML = '<p style="color:var(--muted);font-size:0.9rem;">Products will appear here once connected to your data source.</p>';
                 });
 
-            
-            // Update Selected Products when Checkboxes Change
             function updateSelectedProducts() {
-                // Preserve quantities when re-rendering
                 const quantityMap = new Map();
-                const existingQuantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
-                existingQuantityInputs.forEach(input => {
-                    quantityMap.set(input.dataset.productId, parseInt(input.value, 10));
+                document.querySelectorAll('#selected-products-list input[type="number"]').forEach(i => {
+                    quantityMap.set(i.dataset.productId, parseInt(i.value, 10));
                 });
 
                 selectedProductsList.innerHTML = '';
-                const checkboxes = document.querySelectorAll('input[name="product"]:checked');
+                const checked = document.querySelectorAll('input[name="product"]:checked');
 
-                if (checkboxes.length > 0) {
-                    const header = document.createElement('li');
-                    header.innerHTML = `
-                        <span>Product</span>
-                        <span>Quantity</span>
-                    `;
-                    header.style.fontWeight = 'bold';
-                    header.style.borderBottom = '2px solid #ddd';
-                    selectedProductsList.appendChild(header);
+                if (checked.length === 0) {
+                    selectedProductsList.innerHTML = '<li class="empty-order">No products selected yet.</li>';
+                    updateTotalAmount();
+                    return;
                 }
 
-                checkboxes.forEach(checkbox => {
-                    const li = document.createElement('li');
+                checked.forEach(checkbox => {
                     const product = products.find(p => p.name === checkbox.value);
                     const price = parseFloat(checkbox.dataset.price);
-                    const quantity = quantityMap.get(product.id) || 1;
-
+                    const qty = quantityMap.get(product.id) || 1;
+                    const li = document.createElement('li');
                     li.innerHTML = `
-                        <img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
-                        <span>${checkbox.value}</span>
+                        <img src="${product.image}" alt="${product.name}">
+                        <span>${product.name}</span>
                         <input type="hidden" name="product-name-${product.id}" value="${product.name}">
                         <input type="hidden" name="product-price-${product.id}" value="${price}">
-                        <input type="number" min="1" value="${quantity}" name="quantity-${product.id}" data-product-id="${product.id}" data-price="${price}">
+                        <input type="number" min="1" value="${qty}" name="quantity-${product.id}" data-product-id="${product.id}" data-price="${price}">
                     `;
                     selectedProductsList.appendChild(li);
                 });
 
                 updateTotalAmount();
-
-                const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
-                quantityInputs.forEach(input => {
-                    input.addEventListener('change', updateTotalAmount);
+                document.querySelectorAll('#selected-products-list input[type="number"]').forEach(i => {
+                    i.addEventListener('change', updateTotalAmount);
                 });
             }
-
-            // Update Total Amount when Quantity Changes
-            // function updateTotalAmount() {
-            //     let totalAmount = 0;
-            //     const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
-            //     quantityInputs.forEach(input => {
-            //         const price = parseFloat(input.dataset.price);
-            //         const quantity = parseInt(input.value, 10);
-            //         totalAmount += price * quantity;
-            //     });
-            //     console.log("Total Amount: ", totalAmount);
-            //     document.getElementById('total-amount-container').innerText = `Total: $${totalAmount.toFixed(2)}`;
-            //     document.getElementById('total-order-amount').value = totalAmount.toFixed(2);
-            // }
 
             document.getElementById('download-order').addEventListener('click', () => {
                 const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
                 if (orderDetails) {
                     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(orderDetails, null, 2));
-                    const downloadAnchorNode = document.createElement('a');
-                    downloadAnchorNode.setAttribute("href", dataStr);
-                    downloadAnchorNode.setAttribute("download", "orders.json");
-                    document.body.appendChild(downloadAnchorNode); // required for firefox
-                    downloadAnchorNode.click();
-                    downloadAnchorNode.remove();
+                    const a = document.createElement('a');
+                    a.setAttribute("href", dataStr);
+                    a.setAttribute("download", "orders.json");
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
                 }
             });
-
-            // form.addEventListener('submit', function(event) {
-            //     event.preventDefault();
-            //     const orderDetails = [];
-            //     const quantityInputs = document.querySelectorAll('#selected-products-list input[type="number"]');
-                
-            //     const customerName = document.getElementById('customer-name').value;
-            //     const customerPhone = document.getElementById('customer-phone').value;
-            //     const customerEmail = document.getElementById('customer-email').value;
-
-            //     fetch('data/products.json')
-            //         .then(response => response.json())
-            //         .then(products => {
-            //             quantityInputs.forEach(input => {
-            //                 const productName = input.dataset.product;
-            //                 const quantity = parseInt(input.value, 10);
-            //                 const product = products.find(p => p.name === productName);
-
-            //                 if (product) {
-            //                     orderDetails.push({
-            //                         name: product.name,
-            //                         quantity: quantity,
-            //                         price: product.price,
-            //                         image: product.image,
-            //                         total: product.price * quantity
-            //                     });
-            //                 }
-            //             });
-
-            //             localStorage.setItem('orderDetails', JSON.stringify({
-            //                 products: orderDetails,
-            //                 customer: {
-            //                     name: customerName,
-            //                     phone: customerPhone,
-            //                     email: customerEmail
-            //                 }
-            //             }));
-            //             window.location.href = 'order.html';
-            //         });
-            // });
         });
-
-        // ==== add extra data before submitting =======
-        // document.getElementById('promo-form').addEventListener('submit', async (e) => {
-        //     e.preventDefault();
-
-        //     const formData = new FormData(e.target);
-        //     formData.append('total-amount', document.getElementById('total-amount-container').textContent);
-
-        //     await fetch('/submit', {
-        //         method: 'POST',
-        //         body: formData
-        //     });
-        // });
-
-
     </script>
 </body>
 </html>

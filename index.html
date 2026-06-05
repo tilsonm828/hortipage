@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taconic Horticulture Department</title>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <title>Taconic Horticulture Department</title>
 
 </head>
 
 <body>
 
 <div id="splash">
-    <img src="./assets/images/sales.png" alt="Welcome">
+    <a href="sales.html"><img src="./assets/images/sales.png" alt="Welcome"></a>
     <button id="close-btn" aria-label="Close">×</button>
 </div>
 
@@ -21,7 +22,7 @@
   <div class="hero-content">
     <h1 class="glow-gold">Taconic Horticulture Department</h1>
     <p>Growing the future, one plant at a time</p>
-    <a href="sales.html" class="hero-button glow-gold">View Seasonal Sales</a>
+    <a href="sales.html" class="hero-button glow-gold">Seasonal Sales</a>
   </div>
 </header>
 
@@ -60,115 +61,6 @@
         </ul>
       </div>
     </div>
-
-    
-  </div>
-</div>
-
-<!-- SEASONAL SALES SECTION -->
-<div class="section" id="seasonal-sales" style="display: none;">
-  <div class="card">
-    <h2>Seasonal Plant Sales</h2>
-
-    <p class="body-text">
-      When seasonal sales are active, details will appear here. Customers can browse available plants and submit
-      an order request. Payment is not processed on this website — customers may pay via Venmo or in person at pickup.
-    </p>
-
-    <h3 class="subheading">Current Seasonal Sale (Example)</h3>
-    
-
-    <!-- PRODUCT GRID -->
-    <div class="seasonal-grid">
-
-      <div class="seasonal-item">
-        <img class="prod_img" src="https://www.marthastewart.com/thmb/ZB5TTRnENF8HA1KgIeKIKBrr45w=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/blooming-azalea-plant-getty-1221-2000-65bfc3a5812c4286a2c22aeeddd491f6.jpg" alt="Azalea">
-        <h3>Azalea – $15</h3>
-        <p>The bold beauty of the azalea makes it a spring favorite.</p>
-      </div>
-    
-      <div class="seasonal-item">
-        <img src="https://www.planetnatural.com/wp-content/uploads/2024/03/Celosia-with-red-orange-and-yellow-flowers-400x225.jpg" alt="Celosia">
-        <h3>Celosia – $5</h3>
-        <p>Known for its wild shapes and vibrant colors.</p>
-      </div>
-    
-      <div class="seasonal-item">
-        <img src="https://www.gardendesign.com/pictures/images/675x529Max/site_3/helianthus-yellow-flower-pixabay_11863.jpg" alt="Sunflower">
-        <h3>Sunflower – $4</h3>
-        <p>Iconic, easy-to-grow, and loved by gardeners everywhere.</p>
-      </div>
-    
-    </div>
-    
-    <h3 class="subheading">Order Request Form</h3>
-
-    <form>
-      <label for="cust-name">Name:</label>
-      <input id="cust-name" type="text" required>
-
-      <label for="cust-email">Email:</label>
-      <input id="cust-email" type="email" required>
-
-      <label for="plant-type">Plant Type:</label>
-      <select id="plant-type">
-        <option>Azalea</option>
-        <option>Celosia</option>
-        <option>Sunflower</option>
-        <option>More coming-soon</option>
-      </select>
-
-      <label for="quantity">Quantity:</label>
-      <input id="quantity" type="number" min="1" required>
-
-      <label for="notes">Notes (optional):</label>
-      <textarea id="notes" rows="3" placeholder="Pickup preferences, special requests, etc."></textarea>
-
-      <p class="note-text">
-        An email notification will be sent to the designated horticulture contact for order coordination.
-        Payment will be completed via Venmo or in person at pickup.
-      </p>
-
-      <button type="submit">Submit Order Request</button>
-    </form>
-
-    <hr class="divider">
-
-    <h3 class="subheading glow-gold">Payment Options</h3>
-
-    <div class="payment-box">
-      <p><strong>Choose your preferred payment method:</strong></p>
-      <ul>
-        <li>✔ Venmo (recommended)</li>
-        <li>✔ Pay at Pickup (cash or check)</li>
-      </ul>
-      <p class="note-text">
-        After submitting your order request, you will receive a confirmation email with pickup details.
-      </p>
-    </div>
-
-
-    <!-- VENMO PAYMENT -->
-    <div class="payment-box">
-      <h3 class="subheading glow-gold">Pay with Venmo</h3>
-      <p>Scan the QR code below or use the button to open Venmo.</p>
-
-      <img class="venmo-qr" src="https://via.placeholder.com/200x200?text=Venmo+QR" alt="Venmo QR Code">
-
-      <a class="venmo-button" href="#" target="_blank">Open Venmo</a>
-    </div>
-
-  
-
-    <!-- COMING SOON -->
-    <div class="payment-box coming-soon">
-      <h3 class="subheading glow-gold">Online Payment Coming Soon</h3>
-      <p>
-        We are working on adding secure online payment options directly through this website.
-        Stay tuned for updates!
-      </p>
-    </div>
-
   </div>
 </div>
 
@@ -195,29 +87,29 @@
   <div class="plant-grid">
     <div class="plant-card">
       <img src="./assets/images/student-act01.png" alt="Azalea">
-      <h3>Azalea</h3>
-      <p>The bold beauty of the azalea is what makes it one of the most loved spring-blooming shrubs in the country.</p>
+      <h3>Landscaping</h3>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, maiores! Explicabo, iste error!</p>
     </div>
 
     <div class="plant-card">
       <img src="./assets/images/student-act02.png" alt="Celosia">
-      <h3>Celosia</h3>
-      <p>Celosia flowers are truly one of a kind and are known for their wild-looking shapes and colors.</p>
+      <h3>Plant Management</h3>
+      <p>Expedita officiis architecto nobis autem a repellendus quibusdam doloremque quod totam dolores</p>
     </div>
 
     <div class="plant-card">
       <img src="./assets/images/student-act03.png" alt="Sunflower">
-      <h3>Sunflower</h3>
-      <p>Sunflowers are iconic, easy-to-grow plants enjoyed by gardeners in every state.</p>
+      <h3>Maintenance</h3>
+      <p>Lorem ipsum tempore nostrum, architecto sapiente, quae maxime corporis error! Aspernatur accusamus.</p>
     </div>
   </div>
 
   <div class="info-card" id="ffa-section">
     <div class="ffa-container">
       <div class="ffa-content">
+        <br>
+        <h3>FFA Program</h3>
         <p class="body-text">
-          <br>
-          <h3>FFA Program</h3>
           The Taconic FFA chapter gives students the opportunity to develop leadership, career skills, and
           community connections through agricultural education.
         </p>
@@ -280,7 +172,7 @@
       <div class="teacher-card teacher-card-compact">
         <img src="assets/images/staff.png" alt="Mr. Weinstein" class="teacher-image">
         <div class="teacher-content">
-          <h4>Mr. Weinstein, Grade 9 & 10 Teacher</h4>
+          <h4>Mr. Weinstein</h4>
           <p class="teacher-info">
             Background in plant science, greenhouse operations, and agricultural education.
             Leads core horticulture classes, greenhouse labs, and seasonal plant production.
@@ -292,7 +184,7 @@
       <div class="teacher-card teacher-card-compact">
         <img src="assets/images/staff.png" alt="Mr. Callahan" class="teacher-image">
         <div class="teacher-content">
-          <h4>Mr. Callahan, Grade 11 & 12 Teacher</h4>
+          <h4>Mr. Callahan</h4>
           <p class="teacher-info">
             Specializes in leadership development, FFA coordination, and advanced horticulture projects.
             Supports student competitions, community outreach, and greenhouse management.

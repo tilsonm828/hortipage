@@ -4,242 +4,388 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --sage: #5a7a52;
+            --sage-dark: #3e5638;
+            --sage-light: #8aaa82;
+            --cream: #f8f5f0;
+            --warm-white: #fffdf9;
+            --text: #2c2c2c;
+            --muted: #7a7a72;
+            --border: #e0dbd3;
+            --accent: #c4853a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px 60px;
+            background-image:
+                radial-gradient(ellipse at 20% 0%, rgba(90,122,82,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 100%, rgba(196,133,58,0.06) 0%, transparent 50%);
         }
+
         .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin: 20px auto;
+            max-width: 640px;
+            margin: auto;
+            animation: fadeUp 0.5s ease both;
         }
-        h1 {
-            color: #333;
+
+        /* Header */
+        .header {
             text-align: center;
+            margin-bottom: 36px;
+            animation: fadeDown 0.6s ease both;
         }
-        p {
-            margin-bottom: 10px;
-        }
-        .detail-item {
-            margin-bottom: 5px;
-        }
-        .detail-item strong {
+
+        .header-eyebrow {
             display: inline-block;
-            width: 120px;
-        }
-        .detail-item input[type="text"] {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 5px;
-            margin-left: 5px;
-            background-color: #f9f9f9;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--sage);
+            border: 1px solid var(--sage-light);
+            padding: 5px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
         }
 
-        .button-style {
-            display: block;
-            width: 50%;
-            padding: 10px;
-            background-color: #5a8b5a;
-            color: white;
-            border: none;
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 700;
+            color: var(--sage-dark);
+            line-height: 1.15;
+        }
+
+        /* Section cards */
+        .section-card {
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--sage-dark);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 20px;
+            background: var(--sage);
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        /* Detail rows */
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-row:last-child { border-bottom: none; }
+
+        .detail-label {
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            width: 90px;
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            color: var(--text);
+            flex: 1;
+            background: var(--cream);
+            border: 1.5px solid var(--border);
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-        }
-        .button-style:hover {
-            background-color: #50b155;
+            padding: 9px 13px;
+            font-family: 'DM Sans', sans-serif;
         }
 
+        /* Product items */
+        .product-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            gap: 12px;
+        }
+
+        .product-row:last-child { border-bottom: none; }
+
+        .product-name {
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .product-qty {
+            font-size: 0.85rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .product-subtotal {
+            font-weight: 600;
+            color: var(--sage-dark);
+            white-space: nowrap;
+            font-size: 0.95rem;
+        }
+
+        /* Total */
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            margin-top: 4px;
+            border-top: 2px solid var(--border);
+        }
+
+        .total-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .total-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--sage-dark);
+        }
+
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 24px;
+            border-radius: 10px;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            flex: 2;
+            background: var(--sage);
+            color: white;
+            box-shadow: 0 4px 14px rgba(90,122,82,0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--sage-dark);
+            box-shadow: 0 6px 20px rgba(90,122,82,0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: transparent;
+            color: var(--muted);
+            border: 1.5px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--sage-light);
+            color: var(--sage);
+            background: rgba(90,122,82,0.04);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 20px;
+            font-size: 0.88rem;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--sage); }
+
+        .no-order {
+            text-align: center;
+            color: var(--muted);
+            padding: 20px 0;
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .btn-row { flex-direction: column; }
+            .section-card { padding: 20px; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Order Summary</h1>
+
+        <div class="header">
+            <div class="header-eyebrow">Pay In Person</div>
+            <h1>Order Summary</h1>
+        </div>
+
         <div id="order-details">
             <form id="order-details-form" action="https://formspree.io/f/mdajqypg" method="POST">
-                <div id="customer-info-display"></div>
-                <div id="product-list-display"></div>
-                <div id="total-amount-display"></div>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="submit" id="send-button" class="button-style" style="flex: 1; margin-top: 0;">Send</button>
-                    <button type="button" onclick="window.location.href='index.html'" class="button-style" style="flex: 1; margin-top: 0;">Home</button>
+
+                <!-- Customer Info -->
+                <div class="section-card" id="customer-card">
+                    <div class="section-title">Customer Information</div>
+                    <div id="customer-info-display"></div>
                 </div>
+
+                <!-- Products -->
+                <div class="section-card" id="products-card">
+                    <div class="section-title">Order Items</div>
+                    <div id="product-list-display"></div>
+                    <div id="total-amount-display"></div>
+                </div>
+
+                <div class="section-card" style="padding: 20px 32px;">
+                    <div class="btn-row">
+                        <button type="submit" id="send-button" class="btn-primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            Submit Order
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                            Home
+                        </button>
+                    </div>
+                </div>
+
             </form>
         </div>
-        <p><a href="sales.html"> <<< Order Another </a></p>
 
-        <!-- <button id="confirm-order-button" style="
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background-color: #5a8b5a;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-        ">Confirm Order</button> -->
+        <a href="sales.html" class="back-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Order Another
+        </a>
+
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const orderDetailsDiv = document.getElementById('order-details');
             const customerInfoDisplay = document.getElementById('customer-info-display');
             const productListDisplay = document.getElementById('product-list-display');
             const totalAmountDisplay = document.getElementById('total-amount-display');
-            console.log(urlParams.toString());
-            let detailsHtml = '';
 
             if (urlParams.toString() === '') {
-                detailsHtml = '<p>No order details submitted.</p>';
+                customerInfoDisplay.innerHTML = '<p class="no-order">No order details submitted.</p>';
+                return;
+            }
+
+            let products = {};
+            let customerDetails = {};
+            let totalAmount = 0;
+
+            for (let [key, value] of urlParams.entries()) {
+                key = decodeURIComponent(key);
+                value = decodeURIComponent(value);
+
+                if (key.startsWith('quantity-')) {
+                    const id = key.replace('quantity-', '');
+                    if (!products[id]) products[id] = {};
+                    products[id].quantity = parseInt(value, 10);
+                } else if (key.startsWith('product-name-')) {
+                    const id = key.replace('product-name-', '');
+                    if (!products[id]) products[id] = {};
+                    products[id].name = value;
+                } else if (key.startsWith('product-price-')) {
+                    const id = key.replace('product-price-', '');
+                    if (!products[id]) products[id] = {};
+                    products[id].price = parseFloat(value);
+                } else if (key === 'total-order-amount') {
+                    totalAmount = parseFloat(value);
+                } else if (key.startsWith('customer-')) {
+                    customerDetails[key.replace('customer-', '')] = value;
+                }
+            }
+
+            // Render customer info
+            const labelMap = { name: 'Name', email: 'Email', phone: 'Phone', notes: 'Notes' };
+            if (Object.keys(customerDetails).length > 0) {
+                customerInfoDisplay.innerHTML = Object.entries(customerDetails).map(([key, val]) => `
+                    <div class="detail-row">
+                        <span class="detail-label">${labelMap[key] || key}</span>
+                        <input type="text" class="detail-value" name="${key}" value="${val}" readonly>
+                    </div>
+                `).join('');
             } else {
-                // detailsHtml = '<h2>Submitted Information:</h2>';
-                let products = {};
-                let customerDetails = {};
-                let totalAmount = 0;
+                customerInfoDisplay.innerHTML = '<p class="no-order">No customer info found.</p>';
+            }
 
-                for (let pair of urlParams.entries()) {
-                    let key = decodeURIComponent(pair[0]);
-                    let value = decodeURIComponent(pair[1]);
+            // Render products
+            if (Object.keys(products).length > 0) {
+                productListDisplay.innerHTML = Object.values(products).map(p => `
+                    <div class="product-row">
+                        <span class="product-name">${p.name}</span>
+                        <span class="product-qty">× ${p.quantity} @ $${p.price.toFixed(2)}</span>
+                        <span class="product-subtotal">$${(p.quantity * p.price).toFixed(2)}</span>
+                        <input type="hidden" name="${p.name}" value="${p.quantity} x ${p.price.toFixed(2)} = $${(p.quantity * p.price).toFixed(2)}">
+                    </div>
+                `).join('');
 
-                    if (key.startsWith('quantity-')) {
-                        const productId = key.replace('quantity-', '');
-                        if (!products[productId]) products[productId] = {};
-                        products[productId].quantity = parseInt(value, 10);
-                    } else if (key.startsWith('product-name-')) {
-                        const productId = key.replace('product-name-', '');
-                        if (!products[productId]) products[productId] = {};
-                        products[productId].name = value;
-                    } else if (key.startsWith('product-price-')) {
-                        const productId = key.replace('product-price-', '');
-                        if (!products[productId]) products[productId] = {};
-                        products[productId].price = parseFloat(value);
-                    } else if (key === 'total-order-amount') {
-                        totalAmount = parseFloat(value);
-                    } else if (key.startsWith('customer-')) {
-                        customerDetails[key.replace('customer-', '')] = value;
-                    }
-                        // } else {
-                    //     // For other general form fields
-                    //     detailsHtml += `<p class="detail-item"><strong>${key}:</strong> ${value}</p>`;
-                    // }
-                }
-
-                // Display Customer Details
-                if (Object.keys(customerDetails).length > 0) {
-                    let customerHtml = '<h3>Customer Information:</h3>';
-                    for (const key in customerDetails) {
-                        customerHtml += `
-                            <div class="detail-item">
-                                <label><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong></label>
-                                <input type="text" name="${key.charAt(0).toUpperCase() + key.slice(1)}" value="${customerDetails[key]}" readonly style="width: calc(100% - 160px); padding: 5px; margin-left: 5px;">
-                            </div>
-                        `;
-                    }
-                    customerInfoDisplay.innerHTML = customerHtml;
-                }
-
-                // Display Product Details
-                if (Object.keys(products).length > 0) {
-                    let productsHtml = '<h3>Order Items:</h3>';
-                    for (const productId in products) {
-                        const product = products[productId];
-                        const subtotal = (product.quantity * product.price).toFixed(2);
-                        productsHtml += `
-                            <div class="detail-item">
-                                <label><strong>${product.name}:</strong></label>
-                                <input type="text" name="${product.name}" value="${product.quantity} x ${product.price.toFixed(2)} = $${subtotal}" readonly style="width: calc(100% - 160px); padding: 5px; margin-left: 5px;">
-                            </div>
-                        `;
-                    }
-                    productListDisplay.innerHTML = productsHtml;
-                }
-
-                // Display Total Amount
                 totalAmountDisplay.innerHTML = `
-                    <h3 style="text-align: right; margin-top: 20px;">
-                        <label>Total Amount:</label>
-                        <input type="text" name="Total-Amount" value="$${totalAmount.toFixed(2)}" readonly style="font-size: 18px; width: auto; padding: 5px; font-weight: bold; text-align: right; border: none; background: transparent;">
-                    </h3>
+                    <div class="total-line">
+                        <span class="total-label">Total</span>
+                        <span class="total-amount">$${totalAmount.toFixed(2)}</span>
+                        <input type="hidden" name="Total-Amount" value="$${totalAmount.toFixed(2)}">
+                    </div>
                 `;
-            }
-            // orderDetailsDiv.innerHTML = detailsHtml;
-
-            // Populate the hidden form for submission to confirmation.html
-            // const confirmOrderForm = document.getElementById('confirm-order-form');
-
-            // if (Object.keys(customerDetails).length > 0) {
-            //     for (const key in customerDetails) {
-            //         const input = document.createElement('input');
-            //         input.type = 'hidden';
-            //         input.name = `customer-${key}`;
-            //         input.value = customerDetails[key];
-            //         confirmOrderForm.appendChild(input);
-            //     }
-            // }
-
-            // if (Object.keys(products).length > 0) {
-            //     for (const productId in products) {
-            //         const product = products[productId];
-                    
-            //         let inputName = document.createElement('input');
-            //         inputName.type = 'hidden';
-            //         inputName.name = `product-name-${productId}`;
-            //         inputName.value = product.name;
-            //         confirmOrderForm.appendChild(inputName);
-
-            //         let inputQuantity = document.createElement('input');
-            //         inputQuantity.type = 'hidden';
-            //         inputQuantity.name = `quantity-${productId}`;
-            //         inputQuantity.value = product.quantity;
-            //         confirmOrderForm.appendChild(inputQuantity);
-
-            //         let inputPrice = document.createElement('input');
-            //         inputPrice.type = 'hidden';
-            //         inputPrice.name = `product-price-${productId}`;
-            //         inputPrice.value = product.price;
-            //         confirmOrderForm.appendChild(inputPrice);
-            //     }
-            // }
-
-            if (totalAmount > 0) {
-                const inputTotal = document.createElement('input');
-                inputTotal.type = 'hidden';
-                inputTotal.name = 'total-order-amount';
-                inputTotal.value = totalAmount.toFixed(2);
-                confirmOrderForm.appendChild(inputTotal);
-            }
-
-            // New JavaScript for JSON submission
-            const confirmOrderButton = document.getElementById('confirm-order-button');
-            if (confirmOrderButton) {
-                confirmOrderButton.addEventListener('click', () => {
-                    const orderData = {
-                        customer: customerDetails,
-                        products: [],
-                        totalAmount: totalAmount.toFixed(2)
-                    };
-
-                    for (const productId in products) {
-                        orderData.products.push({
-                            id: productId,
-                            name: products[productId].name,
-                            quantity: products[productId].quantity,
-                            price: products[productId].price.toFixed(2)
-                        });
-                    }
-
-                    localStorage.setItem('orderDetailsJson', JSON.stringify(orderData));
-                    window.location.href = 'confirmation.html';
-                });
+            } else {
+                productListDisplay.innerHTML = '<p class="no-order">No products in this order.</p>';
             }
         });
     </script>
